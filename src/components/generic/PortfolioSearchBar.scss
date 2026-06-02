@@ -1,0 +1,66 @@
+@import "/src/styles/extend.scss";
+
+.portfolio-search-bar {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 1rem auto;
+}
+
+.portfolio-search-bar-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--theme-boards-background);
+    border: 2px solid var(--theme-card-background);
+    border-radius: $standard-border-radius;
+    padding: 0.5rem 0.75rem;
+    transition: border-color 0.2s ease;
+
+    &:focus-within {
+        border-color: var(--theme-primary);
+    }
+
+    @include media-breakpoint-down(md) {
+        border-width: 1px;
+    }
+}
+
+.portfolio-search-bar-icon {
+    color: var(--theme-texts-light-1);
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+.portfolio-search-bar-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--theme-texts-light-1);
+    font-size: 0.875rem;
+    min-width: 0;
+
+    &::placeholder {
+        color: var(--theme-texts-light-1);
+        opacity: 0.5;
+    }
+}
+
+.portfolio-search-bar-clear {
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 0 0 0 0.5rem;
+    color: var(--theme-texts-light-1);
+    flex-shrink: 0;
+
+    &:hover {
+        color: var(--theme-primary);
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--theme-primary);
+        border-radius: 2px;
+    }
+}

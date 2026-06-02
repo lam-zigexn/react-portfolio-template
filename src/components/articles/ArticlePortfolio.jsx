@@ -8,6 +8,8 @@ import AvatarView from "/src/components/generic/AvatarView.jsx"
 import {Tag, Tags} from "/src/components/generic/Tags.jsx"
 import ArticleItemPreviewMenu from "/src/components/articles/partials/ArticleItemPreviewMenu.jsx"
 import {useLanguage} from "/src/providers/LanguageProvider.jsx"
+import PortfolioSearchBar from "/src/components/generic/PortfolioSearchBar.jsx"
+import {filterPortfolioItems} from "/src/utils/portfolioSearch.js"
 
 /**
  * @param {ArticleDataWrapper} dataWrapper
@@ -17,6 +19,7 @@ import {useLanguage} from "/src/providers/LanguageProvider.jsx"
  */
 function ArticlePortfolio({ dataWrapper, id }) {
     const [selectedItemCategoryId, setSelectedItemCategoryId] = useState(null)
+    const [searchQuery, setSearchQuery] = useState('')
 
     return (
         <Article id={dataWrapper.uniqueId}
@@ -26,7 +29,9 @@ function ArticlePortfolio({ dataWrapper, id }) {
                  selectedItemCategoryId={selectedItemCategoryId}
                  setSelectedItemCategoryId={setSelectedItemCategoryId}>
             <ArticlePortfolioItems dataWrapper={dataWrapper}
-                                   selectedItemCategoryId={selectedItemCategoryId}/>
+                                   selectedItemCategoryId={selectedItemCategoryId}
+                                   searchQuery={searchQuery}
+                                   setSearchQuery={setSearchQuery}/>
         </Article>
     )
 }
@@ -34,13 +39,22 @@ function ArticlePortfolio({ dataWrapper, id }) {
 /**
  * @param {ArticleDataWrapper} dataWrapper
  * @param {String} selectedItemCategoryId
+ * @param {String} searchQuery
+ * @param {Function} setSearchQuery
  * @return {JSX.Element}
  * @constructor
  */
-function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
+function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId, searchQuery, setSearchQuery }) {
     const constants = useConstants()
     const language = useLanguage()
     const viewport = useViewport()
+
+    const [debouncedQuery, setDebouncedQuery] = useState('')
+
+    useEffect(() => {
+        const timer = setTimeout(() => setDebouncedQuery(searchQuery), 300)
+        return () => clearTimeout(timer)
+    }, [searchQuery])
 
     const filteredItems = dataWrapper.getOrderedItemsFilteredBy(selectedItemCategoryId)
     const customBreakpoint = viewport.getCustomBreakpoint(constants.SWIPER_BREAKPOINTS_FOR_THREE_SLIDES)
@@ -49,31 +63,78 @@ function ArticlePortfolioItems({ dataWrapper, selectedItemCategoryId }) {
     const itemsPerRowClass = `article-portfolio-items-${itemsPerRow}-per-row`
 
     const refreshFlag = dataWrapper.categories?.length ?
-        selectedItemCategoryId + "-" + language.getSelectedLanguage()?.id :
-        language.getSelectedLanguage()?.id
+        selectedItemCategoryId + "-" + debouncedQuery + "-" + language.getSelectedLanguage()?.id :
+        debouncedQuery + "-" + language.getSelectedLanguage()?.id
+
+    const displayItems = filterPortfolioItems(filteredItems, debouncedQuery)
+
+    const handleClear = () => {
+        setSearchQuery('')
+        setDebouncedQuery('')
+    }
+
+    const searchBar = (
+        <>
+            <PortfolioSearchBar value={searchQuery}
+                                onChange={setSearchQuery}
+                                onClear={handleClear}/>
+            <div aria-live="polite"
+                 aria-atomic="true"
+                 className="visually-hidden">
+                {debouncedQuery ? displayItems.length + (displayItems.length !== 1 ? ' projects' : ' project') + ' found' : ''}
+            </div>
+        </>
+    )
+
+    if (debouncedQuery && displayItems.length === 0) {
+        return (
+            <>
+                {searchBar}
+                <div className="portfolio-empty-state text-2"
+                     role="status"
+                     id="portfolio-items-region">
+                    <p>No projects match "<strong>{debouncedQuery}</strong>".</p>
+                    <button type="button"
+                            className="btn portfolio-empty-state-reset"
+                            onClick={handleClear}>
+                        Clear search
+                    </button>
+                </div>
+            </>
+        )
+    }
 
     if(dataWrapper.categories?.length) {
         return (
-            <Transitionable id={dataWrapper.uniqueId}
-                            refreshFlag={refreshFlag}
-                            delayBetweenItems={100}
-                            animation={Transitionable.Animations.POP}
-                            className={`article-portfolio-items ${itemsPerRowClass}`}>
-                {filteredItems.map((itemWrapper, key) => (
-                    <ArticlePortfolioItem itemWrapper={itemWrapper}
-                                          key={key}/>
-                ))}
-            </Transitionable>
+            <>
+                {searchBar}
+                <div id="portfolio-items-region">
+                    <Transitionable id={dataWrapper.uniqueId}
+                                    refreshFlag={refreshFlag}
+                                    delayBetweenItems={100}
+                                    animation={Transitionable.Animations.POP}
+                                    className={`article-portfolio-items ${itemsPerRowClass}`}>
+                        {displayItems.map((itemWrapper, key) => (
+                            <ArticlePortfolioItem itemWrapper={itemWrapper}
+                                                  key={key}/>
+                        ))}
+                    </Transitionable>
+                </div>
+            </>
         )
     }
     else {
         return (
-            <div className={`article-portfolio-items ${itemsPerRowClass} mb-3 mb-lg-2`}>
-                {filteredItems.map((itemWrapper, key) => (
-                    <ArticlePortfolioItem itemWrapper={itemWrapper}
-                                          key={key}/>
-                ))}
-            </div>
+            <>
+                {searchBar}
+                <div id="portfolio-items-region"
+                     className={`article-portfolio-items ${itemsPerRowClass} mb-3 mb-lg-2`}>
+                    {displayItems.map((itemWrapper, key) => (
+                        <ArticlePortfolioItem itemWrapper={itemWrapper}
+                                              key={key}/>
+                    ))}
+                </div>
+            </>
         )
     }
 }
