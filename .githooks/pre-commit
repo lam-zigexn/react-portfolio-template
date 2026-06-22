@@ -1,0 +1,14 @@
+#!/bin/sh
+# Local backpressure gate — runs the same checks as CI before each commit.
+# Enable once with:  git config core.hooksPath .githooks
+# Bypass in an emergency with:  git commit --no-verify
+
+set -e
+
+echo "[pre-commit] Running lint..."
+npm run lint
+
+echo "[pre-commit] Running tests..."
+npm test
+
+echo "[pre-commit] All checks passed ✓"

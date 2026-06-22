@@ -1,0 +1,43 @@
+=== BACKPRESSURE DEMO: RED (failure introduced on purpose) ===
+Bug: removed .toLowerCase() in src/utils/portfolioSearch.js
+Command: npm test
+
+
+> react-portfolio-template-by-ryan-balieiro@2.0.3 test
+> vitest run
+
+
+ RUN  v4.1.8 /Users/lamtv/Documents/react-portfolio-template
+
+ ❯ src/test/portfolioSearch.test.js (13 tests | 1 failed) 7ms
+     × search is case-insensitive for uppercase query 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/test/portfolioSearch.test.js > filterPortfolioItems > search is case-insensitive for uppercase query
+AssertionError: expected [] to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ src/test/portfolioSearch.test.js:61:25
+     59|     it('search is case-insensitive for uppercase query', () => {
+     60|         const results = filterPortfolioItems(mockItems, 'REACT')
+     61|         expect(results).toHaveLength(2)
+       |                         ^
+     62|     })
+     63|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 17 passed (18)
+   Start at  17:10:07
+   Duration  1.21s (transform 240ms, setup 131ms, import 311ms, tests 113ms, environment 1.29s)
+
+
+Exit code: 0
