@@ -60,4 +60,38 @@ describe('filterPortfolioItems', () => {
         const results = filterPortfolioItems(mockItems, 'REACT')
         expect(results).toHaveLength(2)
     })
+
+    it('returns all items for a whitespace-only query', () => {
+        expect(filterPortfolioItems(mockItems, '   ')).toHaveLength(3)
+    })
+
+    it('trims surrounding whitespace before matching', () => {
+        const results = filterPortfolioItems(mockItems, '  docker  ')
+        expect(results).toHaveLength(1)
+        expect(results[0].locales.title).toBe('API Gateway Service')
+    })
+
+    it('matches partial substrings inside a word', () => {
+        const results = filterPortfolioItems(mockItems, 'analyt')
+        expect(results).toHaveLength(1)
+        expect(results[0].locales.title).toBe('HR Analytics Dashboard')
+    })
+
+    it('falls back to placeholder when locales.title is absent', () => {
+        const items = [{ placeholder: 'Secret Project', locales: {} }]
+        const results = filterPortfolioItems(items, 'secret')
+        expect(results).toHaveLength(1)
+    })
+
+    it('does not throw when an item has no locales at all', () => {
+        const items = [{}, { locales: { title: 'Visible' } }]
+        expect(() => filterPortfolioItems(items, 'visible')).not.toThrow()
+        expect(filterPortfolioItems(items, 'visible')).toHaveLength(1)
+    })
+
+    it('does not mutate the original items array', () => {
+        const copy = [...mockItems]
+        filterPortfolioItems(mockItems, 'react')
+        expect(mockItems).toEqual(copy)
+    })
 })
