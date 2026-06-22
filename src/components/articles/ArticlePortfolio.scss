@@ -93,3 +93,22 @@ div.article-portfolio-item-body {
 div.article-portfolio-item-footer {
     margin-top: 10px;
 }
+
+.portfolio-empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--theme-texts-light-1);
+
+    p {
+        margin-bottom: 0.5rem;
+    }
+}
+
+.portfolio-empty-state-reset {
+    background-color: var(--theme-primary) !important;
+    color: var(--theme-texts-inv) !important;
+    border: none;
+    padding: 0.4rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+}

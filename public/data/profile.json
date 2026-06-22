@@ -1,5 +1,5 @@
 {
-    "name": "Mark Choi",
+    "name": "Tran Vu Lam",
 
     "profilePictureUrl": "images/pictures/profile-picture.jpg",
     "resumePdfUrl": "",
@@ -10,48 +10,48 @@
 
     "locales": {
         "en": {
-            "localized_name": "Mark Choi",
-            "localized_name_stylized": " [[Mark {{Choi}}]]",
-            "status_message_available_for_freelance": "Available for freelance!",
+            "localized_name": "Tran Vu Lam",
+            "localized_name_stylized": "[[Tran Vu {{Lam}}]]",
+            "status_message_available_for_freelance": "Available for new opportunities!",
             "roles": [
-                "Backend Developer",
                 "Frontend Developer",
-                "DevOps Engineer",
-                "UX Designer"
+                "Full-Stack Engineer",
+                "React Specialist",
+                "TypeScript Developer"
             ],
-            "name_pronunciation_ipa": "/mark chwe/",
-            "name_pronunciation_audio_url": "audio/english-name-pronunciation.mp3"
+            "name_pronunciation_ipa": "/tɹæn vuː læm/",
+            "name_pronunciation_audio_url": ""
         },
         "es": {
             "status_message_available_for_freelance": "¡Disponible para freelance!",
             "roles": [
-                "Desarrollador Backend",
                 "Desarrollador Frontend",
-                "Ingeniero DevOps",
-                "Diseñador UX"
+                "Ingeniero Full-Stack",
+                "Especialista React",
+                "Desarrollador TypeScript"
             ]
         },
         "fr": {
             "status_message_available_for_freelance": "Disponible pour freelance !",
             "roles": [
-                "Développeur Backend",
                 "Développeur Frontend",
-                "Ingénieur DevOps",
-                "Designer UX"
+                "Ingénieur Full-Stack",
+                "Spécialiste React",
+                "Développeur TypeScript"
             ]
         },
         "ko": {
-            "localized_name": "최민석",
-            "localized_name_stylized": "{{최}}민석",
+            "localized_name": "쩐 부 람",
+            "localized_name_stylized": "쩐 부 {{람}}",
             "status_message_available_for_freelance": "프리랜스 가능합니다!",
             "roles": [
-                "백엔드 개발자",
                 "프론트엔드 개발자",
-                "데브옵스 엔지니어",
-                "UX 디자이너"
+                "풀스택 엔지니어",
+                "React 전문가",
+                "TypeScript 개발자"
             ],
-            "name_pronunciation_ipa": "/chwe min-seok/",
-            "name_pronunciation_audio_url": "audio/korean-name-pronunciation.mp3"
+            "name_pronunciation_ipa": "/tɹæn vuː læm/",
+            "name_pronunciation_audio_url": ""
         }
     }
 }
